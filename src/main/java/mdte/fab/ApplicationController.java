@@ -1,5 +1,6 @@
 package mdte.fab;
 
+import entite.Custommer;
 import entite.Order;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -16,6 +17,8 @@ public class ApplicationController {
 
     @FXML
     private TextField numOrder_field, custommer_field, mdte_field, price_field;
+
+    private List<Custommer> _custommers;
 
 
 
@@ -34,9 +37,8 @@ public class ApplicationController {
         for (Order o : orders) {
             orders_listView.getItems().add(o.getID());
         }
-        System.out.println(orders);
 
-
+        this._custommers = modele.getCustommer();
     }
 
     @FXML
@@ -44,8 +46,11 @@ public class ApplicationController {
         String selectedItem = (String) orders_listView.getSelectionModel().getSelectedItem();
         Order selectedOrder = modele.getOrderByID(selectedItem);
 
+        String clientID = selectedOrder.getClientID();
+        String clientName = modele.getCustommerByID(clientID);
+
         numOrder_field.setText(selectedOrder.getID());
-        custommer_field.setText(selectedOrder.getClientID());
+        custommer_field.setText(clientName);
         mdte_field.setText(selectedOrder.getMdteID());
         price_field.setText(selectedOrder.getTotalPrice());
     }

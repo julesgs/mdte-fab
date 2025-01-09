@@ -15,4 +15,24 @@ public class Custommer {
         this._email = _email;
         this._adress = _adress;
     }
+
+    public String getID() {
+        return _id;
+    }
+
+    public String getFirstName() {
+        return _firstName;
+    }
+
+    public String getLastName() {
+        return _lastName;
+    }
+
+    public String getEmail() {
+        return _email;
+    }
+
+    public String getAdress() {
+        return _adress;
+    }
 }

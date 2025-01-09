@@ -41,7 +41,29 @@ public class Modele {
     public List<Custommer> getCustommer() {
         List<Custommer> custommers = new ArrayList<>();
 
+        String filePath = "custommers.txt";
+
+        FileManager fm = new FileManager();
+        String content = fm.read(filePath);
+        String[] elements = content.split("\n");
+
+        for (String element : elements) {
+            String[] values = element.split(";");
+
+            Custommer c = new Custommer(values[0], values[1], values[2], values[3], values[4]);
+            custommers.add(c);
+        }
+
         return custommers;
+    }
+
+    public String getCustommerByID(String id) {
+        for (Custommer c : getCustommer()) {
+            if (c.getID().equalsIgnoreCase(id)) {
+                return c.getFirstName() + " " + c.getLastName();
+            }
+        }
+        return null;
     }
 
 }
