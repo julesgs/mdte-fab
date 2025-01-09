@@ -1,6 +1,7 @@
 package service;
 
 import Util.FileManager;
+import entite.Custommer;
 import entite.Order;
 
 import java.util.ArrayList;
@@ -9,8 +10,6 @@ import java.util.List;
 public class Modele {
 
     public List<Order> getOrder() {
-
-
         List<Order> orders = new ArrayList<>();
         String filePath = "orders.txt";
 
@@ -28,6 +27,21 @@ public class Modele {
         }
 
         return orders;
+    }
+
+    public Order getOrderByID(String id) {
+        for (Order o : getOrder()) {
+            if (o.getID().equalsIgnoreCase(id)) {
+                return o;
+            }
+        }
+        return null;
+    }
+
+    public List<Custommer> getCustommer() {
+        List<Custommer> custommers = new ArrayList<>();
+
+        return custommers;
     }
 
 }

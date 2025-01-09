@@ -21,7 +21,27 @@ public class Order {
         this._trackingNumber = trackingNumber;
     }
 
-    public String get_id() {
+    public String getID() {
         return _id;
+    }
+
+    public String getClientID() {
+        return String.valueOf(_clientId);
+    }
+
+    public String getMdteID() {
+        return String.valueOf(_mdteId);
+    }
+
+    public String getTotalPrice() {
+        return String.valueOf(_totalPrice);
+    }
+
+    public String getState() {
+        return String.valueOf(_state);
+    }
+
+    public String getTrackingNumber() {
+        return _trackingNumber;
     }
 }
