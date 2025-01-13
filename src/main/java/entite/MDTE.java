@@ -11,4 +11,18 @@ public class MDTE {
         this._name = name;
         this._price = price;
     }
+
+    public String getID() {
+        return _id;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public float getPrice() {
+        return _price;
+    }
+
+
 }

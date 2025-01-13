@@ -2,6 +2,7 @@ package service;
 
 import Util.FileManager;
 import entite.Custommer;
+import entite.MDTE;
 import entite.Order;
 
 import java.util.ArrayList;
@@ -57,10 +58,36 @@ public class Modele {
         return custommers;
     }
 
-    public String getCustommerByID(String id) {
+    public Custommer getCustommerByID(String id) {
         for (Custommer c : getCustommer()) {
             if (c.getID().equalsIgnoreCase(id)) {
-                return c.getFirstName() + " " + c.getLastName();
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public List<MDTE> getMDTEs(){
+        List<MDTE> mdtes = new ArrayList<>();
+        String filePath = "mdtes.txt";
+
+        FileManager fm = new FileManager();
+        String content = fm.read(filePath);
+        String[] elements = content.split("\n");
+
+        for (String element : elements) {
+            String[] values = element.split(";");
+
+            MDTE m = new MDTE(values[0], values[1], Float.parseFloat(values[2]));
+            mdtes.add(m);
+        }
+        return mdtes;
+    }
+
+    public MDTE getMDTEByID(String id) {
+        for (MDTE m : getMDTEs()) {
+            if (m.getID().equalsIgnoreCase(id)) {
+                return m;
             }
         }
         return null;
