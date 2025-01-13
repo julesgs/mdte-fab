@@ -3,6 +3,7 @@ package service;
 import Util.FileManager;
 import entite.Custommer;
 import entite.MDTE;
+import entite.Options;
 import entite.Order;
 
 import java.util.ArrayList;
@@ -23,7 +24,12 @@ public class Modele {
         for (String element : elements) {
             String[] values = element.split(";");
 
-            Order e = new Order(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), Float.parseFloat(values[3]), Integer.parseInt(values[4]), values[5]);
+            List<String> lesOptions = new ArrayList<>();
+            lesOptions.add("12");
+            lesOptions.add("13");
+            lesOptions.add("14");
+
+            Order e = new Order(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), lesOptions, Float.parseFloat(values[3]), Integer.parseInt(values[4]), values[5]);
             orders.add(e);
         }
 
@@ -88,6 +94,32 @@ public class Modele {
         for (MDTE m : getMDTEs()) {
             if (m.getID().equalsIgnoreCase(id)) {
                 return m;
+            }
+        }
+        return null;
+    }
+
+    public List<Options> getOptions() {
+        List<Options> options = new ArrayList<>();
+        String filePath = "options.txt";
+
+        FileManager fm = new FileManager();
+        String content = fm.read(filePath);
+        String[] elements = content.split("\n");
+
+        for (String element : elements) {
+            String[] values = element.split(";");
+
+            Options o = new Options(values[0], values[1], values[2], Integer.parseInt(values[3]));
+            options.add(o);
+        }
+        return options;
+    }
+
+    public Options getOptionByID(String id) {
+        for (Options o : getOptions()) {
+            if (o.getID().equalsIgnoreCase(id)) {
+                return o;
             }
         }
         return null;

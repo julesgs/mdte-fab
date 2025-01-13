@@ -2,6 +2,7 @@ package mdte.fab;
 
 import entite.Custommer;
 import entite.MDTE;
+import entite.Options;
 import entite.Order;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +19,7 @@ public class ApplicationController {
     private Button RefreshButton, custommerDetails_btn;
 
     @FXML
-    private ListView<String> orders_listView;
+    private ListView<String> orders_listView, options_listView;
 
     @FXML
     private TextField numOrder_field, custommer_field, mdte_field, price_field;
@@ -48,6 +49,19 @@ public class ApplicationController {
     protected void onSelectOrder() {
         String selectedItem = (String) orders_listView.getSelectionModel().getSelectedItem();
         Order selectedOrder = modele.getOrderByID(selectedItem);
+
+        List<String> lesOptions = selectedOrder.getOptions();
+        options_listView.getItems().clear();
+        for (String opt : lesOptions) {
+            Options option = modele.getOptionByID(opt);
+            try {
+                String optionName = option.getName();
+                options_listView.getItems().add(optionName);
+            } catch (Exception e) {
+                options_listView.getItems().add("No name for option id = " + opt);
+            }
+        }
+
 
         String clientID = selectedOrder.getClientID();
         Custommer client = modele.getCustommerByID(clientID);
