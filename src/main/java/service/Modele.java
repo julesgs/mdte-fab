@@ -24,12 +24,9 @@ public class Modele {
         for (String element : elements) {
             String[] values = element.split(";");
 
-            List<String> lesOptions = new ArrayList<>();
-            lesOptions.add("12");
-            lesOptions.add("13");
-            lesOptions.add("14");
+            List<String> lesOptions = this.getOptionsByOrder(values[3]);
 
-            Order e = new Order(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), lesOptions, Float.parseFloat(values[3]), Integer.parseInt(values[4]), values[5]);
+            Order e = new Order(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), lesOptions, Float.parseFloat(values[4]), Integer.parseInt(values[5]), values[6]);
             orders.add(e);
         }
 
@@ -114,6 +111,29 @@ public class Modele {
             options.add(o);
         }
         return options;
+    }
+
+    public static List<String> getOptionsByOrder(String input) {
+
+        if (input == null || input.length() < 2 || !input.startsWith("[") || !input.endsWith("]")) {
+            throw new IllegalArgumentException("Format non valide");
+        }
+
+        String trimmedInput = input.substring(1, input.length() - 1);
+
+        String[] parts = trimmedInput.split(",");
+
+        List<String> result = new ArrayList<>();
+
+        for (String part : parts) {
+            try {
+                result.add(part.trim());
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("La liste ne doit contenir que des nombres");
+            }
+        }
+
+        return result;
     }
 
     public Options getOptionByID(String id) {
