@@ -95,7 +95,6 @@ public class ApplicationController {
         }
     }
 
-
     protected void setNoEditableFields() {
         numOrder_field.setEditable(false);
         custommer_field.setEditable(false);
