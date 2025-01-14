@@ -1,0 +1,52 @@
+
+.root {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-background-color: #0056b3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.list-view {
+    -fx-background-color: #f5f5f7;
+    -fx-border-color: #d1d1d6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 10px;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 12px 15px;
+    -fx-text-fill: #1d1d1f;
+    -fx-font-size: 15px;
+    -fx-font-family: "San Francisco", "Helvetica Neue", "Arial", sans-serif;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #e5e5ea;
+    -fx-text-fill: #0056b3;
+    -fx-cursor: hand;
+}
+
+.list-view .list-cell:pressed {
+    -fx-background-color: #d1d1d6;
+    -fx-text-fill: #0056b3;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #0056b3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+
