@@ -1,10 +1,7 @@
 package service;
 
 import Util.FileManager;
-import entite.Custommer;
-import entite.MDTE;
-import entite.Options;
-import entite.Order;
+import entite.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +137,32 @@ public class Modele {
         for (Options o : getOptions()) {
             if (o.getID().equalsIgnoreCase(id)) {
                 return o;
+            }
+        }
+        return null;
+    }
+
+    public List<Stock> getStocks(){
+        List<Stock> stocks = new ArrayList<>();
+        String filePath = "stocks.txt";
+
+        FileManager fm = new FileManager();
+        String content = fm.read(filePath);
+        String[] elements = content.split("\n");
+
+        for (String element : elements) {
+            String[] values = element.split(";");
+
+            Stock s = new Stock(values[0], values[1], values[2], Integer.parseInt(values[3]));
+            stocks.add(s);
+        }
+        return stocks;
+    }
+
+    public Stock getStockByRefOption(String refOpt) {
+        for (Stock s : getStocks()) {
+            if (s.getIDOption().equals(refOpt)) {
+                return s;
             }
         }
         return null;

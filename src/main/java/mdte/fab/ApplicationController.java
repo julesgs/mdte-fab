@@ -1,9 +1,6 @@
 package mdte.fab;
 
-import entite.Custommer;
-import entite.MDTE;
-import entite.Options;
-import entite.Order;
+import entite.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,10 +13,10 @@ import java.util.List;
 
 public class ApplicationController {
     @FXML
-    private Button RefreshButton, custommerDetails_btn;
+    private Button RefreshButton;
 
     @FXML
-    private ListView<String> orders_listView, options_listView;
+    private ListView<String> orders_listView, options_listView, stocks_listView;
 
     @FXML
     private TextField numOrder_field, custommer_field, mdte_field, price_field;
@@ -42,7 +39,6 @@ public class ApplicationController {
             orders_listView.getItems().add(o.getID());
         }
         this._custommers = modele.getCustommer();
-
     }
 
     @FXML
@@ -52,6 +48,7 @@ public class ApplicationController {
 
         List<String> lesOptions = selectedOrder.getOptions();
         options_listView.getItems().clear();
+        stocks_listView.getItems().clear();
         for (String opt : lesOptions) {
             Options option = modele.getOptionByID(opt);
             try {
@@ -61,7 +58,6 @@ public class ApplicationController {
                 options_listView.getItems().add("No name for option id = " + opt);
             }
         }
-
 
         String clientID = selectedOrder.getClientID();
         Custommer client = modele.getCustommerByID(clientID);
@@ -85,13 +81,20 @@ public class ApplicationController {
             mdte_field.setText("");
         }
 
-
-
         numOrder_field.setText(selectedOrder.getID());
+        price_field.setText(selectedOrder.getTotalPrice() + " €");
 
-
-        price_field.setText(selectedOrder.getTotalPrice());
+        try {
+            List<String> lesOpts = selectedOrder.getOptions();
+            for (String opt : lesOpts) {
+                Stock s = modele.getStockByRefOption(opt);
+                stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
+            }
+        } catch (Exception e){
+            stocks_listView.getItems().add("Erreur lors du chargement des Stocks");
+        }
     }
+
 
     protected void setNoEditableFields() {
         numOrder_field.setEditable(false);

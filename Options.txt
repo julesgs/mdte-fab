@@ -1,1 +1,4 @@
 13;Roue_quinze_pouces;Roue;12
+R18;Roue dix-huit pouces;Roue;12
+KBA;Kit Bitacle Auto;Kit;1
+B250;Batterie 250W;Batterie;1
