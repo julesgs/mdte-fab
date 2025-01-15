@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import service.Modele;
+import service.VueManager;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public class ApplicationController {
 
 
     private final Modele modele = new Modele();
+    private final VueManager vueManager = new VueManager();
 
     public void initialize() {
         onRefreshButtonClick();
@@ -44,11 +46,7 @@ public class ApplicationController {
         selectOrder_label.setVisible(true);
         fabricationOrder_label.setVisible(false);
 
-        option_1_label.setVisible(false);
-        option_2_label.setVisible(false);
-        option_3_label.setVisible(false);
-        rectangle.setVisible(false);
-
+        showOptionsLabels(false);
 
         List<Order> orders = modele.getOrder();
         orders_listView.getItems().clear();
@@ -71,17 +69,16 @@ public class ApplicationController {
 
         if (selectedOrder != null) {
             selectOrder_label.setVisible(false);
-
             fabricationOrder_label.setVisible(true);
             fabricationOrder_label.setText("Fabrication de la commande " + selectedOrder.getID());
-            option_1_label.setVisible(true);
-            option_2_label.setVisible(true);
-            option_3_label.setVisible(true);
-            rectangle.setVisible(true);
+            showOptionsLabels(true);
 
         }
 
+
+        assert selectedOrder != null;
         List<String> lesOptions = selectedOrder.getOptions();
+
         options_listView.getItems().clear();
         for (String opt : lesOptions) {
             Options option = modele.getOptionByID(opt);
@@ -97,22 +94,21 @@ public class ApplicationController {
         Custommer client = modele.getCustommerByID(clientID);
 
         try{
-            custommer_field.setStyle("-fx-font-style: normal;");
             String clientName = client.getFirstName() + " " + client.getLastName();
-            custommer_field.setText(clientName);
+            vueManager.showValueInField(custommer_field, clientName);
+
         } catch (Exception e){
-            custommer_field.setStyle("-fx-border-color: red");
-            custommer_field.setText("");
+            vueManager.setFieldError(custommer_field);
         }
 
         try{
-            mdte_field.setStyle("-fx-font-style: normal;");
             String mdteID = selectedOrder.getMdteID();
             String mdteName = modele.getMDTEByID(mdteID).getName();
-            mdte_field.setText(mdteName);
+
+            vueManager.showValueInField(mdte_field, mdteName);
+
         } catch (Exception e){
-            mdte_field.setStyle("-fx-border-color: red");
-            mdte_field.setText("");
+            vueManager.setFieldError(mdte_field);
         }
 
         numOrder_field.setText(selectedOrder.getID());
@@ -129,21 +125,28 @@ public class ApplicationController {
                 if (i < labels.size()) {
                     Label currentLabel = labels.get(i);
                     if (s.getQuantity() > 0) {
-                        currentLabel.setStyle("-fx-text-fill: #24bf00;");
-                        currentLabel.setText(s.getID() + "   -   Disponible");
+                        vueManager.showLabelDisponible(currentLabel, s);
                     } else {
-                        currentLabel.setStyle("-fx-text-fill: red;");
-                        currentLabel.setText(s.getID() + "   -   Indisponible");
+                       vueManager.showLabelIndisponible(currentLabel, s);
                     }
                 }
             }
         } catch (Exception e){
-            option_1_label.setStyle("-fx-text-fill: red;");
-            option_1_label.setText("Erreur lors du chargement des stocks pour la commande " + selectedOrder.getID());
-            option_2_label.setVisible(false);
-            option_3_label.setVisible(false);
-            rectangle.setVisible(false);
+            vueManager.showErrorStocks(option_1_label, selectedOrder);
+
+            showOptionsLabels(false);
+            option_1_label.setVisible(true);
         }
+    }
+
+
+    //Fonctions d'affichage
+
+    private void showOptionsLabels(boolean show) {
+        option_1_label.setVisible(show);
+        option_2_label.setVisible(show);
+        option_3_label.setVisible(show);
+        rectangle.setVisible(show);
     }
 
     protected void setNoEditableFields() {
