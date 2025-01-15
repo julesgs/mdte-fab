@@ -2,15 +2,11 @@ package mdte.fab;
 
 import entite.*;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import service.Modele;
-import service.VueManager;
+import Util.VueManager;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,12 +35,12 @@ public class ApplicationController {
 
     @FXML
     protected void onRefreshButtonClick() {
-            selectOrder_label.setVisible(true);
-            fabricationOrder_label.setVisible(false);
+        selectOrder_label.setVisible(true);
+        fabricationOrder_label.setVisible(false);
 
-            showOptionsLabels(false);
-            showOrders();
-            showStocks();
+        showOptionsLabels(false);
+        showOrders();
+        showStocks();
     }
 
     @FXML
@@ -55,20 +51,24 @@ public class ApplicationController {
 
         String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
 
-        try{
+        try {
             Order selectedOrder = modele.getOrderByID(selectedItem);
 
             fillOrderFields(selectedOrder);
             showOptionPannel(selectedOrder);
             showFabricationPannel(selectedOrder);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             String message = "Impossible de récupèrer les détails de la commande " + selectedItem + " : " + e.getMessage();
             vueManager.showError(error_label, message);
         }
     }
 
-    //Fonctions d'affichage
+
+
+    /* ############################
+    ||   Fonctions d'affichage    ||
+    ############################# */
 
     private void showOptionsLabels(boolean show) {
         option_1_label.setVisible(show);
@@ -84,7 +84,7 @@ public class ApplicationController {
         price_field.setEditable(false);
     }
 
-    private void fillOrderFields(Order o){
+    private void fillOrderFields(Order o) {
         showClientName(o);
         showMDTEName(o);
         numOrder_field.setText(o.getID());
@@ -94,7 +94,7 @@ public class ApplicationController {
     private void showOrders() {
         try {
             vueManager.deleteError(error_label);
-            List<Order> orders = modele.getOrder();
+            List<Order> orders = modele.getOrders();
             orders_listView.getItems().clear();
             for (Order o : orders) {
                 orders_listView.getItems().add(o.getID());
@@ -113,13 +113,13 @@ public class ApplicationController {
             for (Stock s : stocks) {
                 stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             String message = "Une erreur s'est produite lors du chargement des stocks :" + e.getMessage();
             vueManager.showError(error_label, message);
         }
     }
 
-    private void showOptionPannel(Order o){
+    private void showOptionPannel(Order o) {
         List<String> lesOptions = o.getOptions();
         for (String opt : lesOptions) {
             Options option = modele.getOptionByID(opt);
@@ -133,7 +133,7 @@ public class ApplicationController {
     }
 
     private void showFabricationPannel(Order o) {
-        try{
+        try {
             selectOrder_label.setVisible(false);
             fabricationOrder_label.setVisible(true);
             fabricationOrder_label.setText("Fabrication de la commande " + o.getID());
@@ -155,7 +155,7 @@ public class ApplicationController {
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             vueManager.showErrorStocks(option_1_label, o);
 
             showOptionsLabels(false);
@@ -163,28 +163,28 @@ public class ApplicationController {
         }
     }
 
-    private void showClientName(Order o){
-        try{
+    private void showClientName(Order o) {
+        try {
             String clientID = o.getClientID();
             Custommer client = modele.getCustommerByID(clientID);
             String clientName = client.getFirstName() + " " + client.getLastName();
             vueManager.showValueInField(custommer_field, clientName);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             vueManager.setFieldError(custommer_field);
             String message = "Impossible de récupérer le nom du client";
             vueManager.showError(error_label, message);
         }
     }
 
-    private void showMDTEName(Order o){
-        try{
+    private void showMDTEName(Order o) {
+        try {
             String mdteID = o.getMdteID();
             String mdteName = modele.getMDTEByID(mdteID).getName();
 
             vueManager.showValueInField(mdte_field, mdteName);
 
-        } catch (Exception e){
+        } catch (Exception e) {
             vueManager.setFieldError(mdte_field);
             String message = "Impossible de récupérer le nom du MDTE";
             vueManager.showError(error_label, message);

@@ -1,19 +1,11 @@
-package service;
+package Util;
 
 import entite.Order;
 import entite.Stock;
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-
-import java.util.List;
 
 public class VueManager {
-
-    Modele modele = new Modele();
 
     public void showLabelDisponible(Label label, Stock s) {
         label.setStyle("-fx-text-fill: #24bf00;");

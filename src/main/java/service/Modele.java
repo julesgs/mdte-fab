@@ -8,164 +8,145 @@ import java.util.List;
 
 public class Modele {
 
-    public List<Order> getOrder() {
+    private final FileManager fileManager = new FileManager();
+
+    public List<Order> getOrders() {
         List<Order> orders = new ArrayList<>();
         String filePath = "orders.txt";
+        String content = fileManager.read(filePath);
 
-        FileManager fm = new FileManager();
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+            List<String> options = getOptionsByOrder(values[3]);
 
-        String content = fm.read(filePath);
-
-        String[] elements = content.split("\n");
-
-        for (String element : elements) {
-            String[] values = element.split(";");
-
-            List<String> lesOptions = this.getOptionsByOrder(values[3]);
-
-            Order e = new Order(values[0], Integer.parseInt(values[1]), Integer.parseInt(values[2]), lesOptions, Float.parseFloat(values[4]), Integer.parseInt(values[5]), values[6]);
-            orders.add(e);
+            Order order = new Order(
+                    values[0],
+                    Integer.parseInt(values[1]),
+                    Integer.parseInt(values[2]),
+                    options,
+                    Float.parseFloat(values[4]),
+                    Integer.parseInt(values[5]),
+                    values[6]
+            );
+            orders.add(order);
         }
 
         return orders;
     }
 
     public Order getOrderByID(String id) {
-        for (Order o : getOrder()) {
-            if (o.getID().equalsIgnoreCase(id)) {
-                return o;
-            }
-        }
-        return null;
+        return getOrders().stream()
+                .filter(order -> order.getID().equalsIgnoreCase(id))
+                .findFirst()
+                .orElse(null);
     }
 
-    public List<Custommer> getCustommer() {
+    public List<Custommer> getCustommers() {
         List<Custommer> custommers = new ArrayList<>();
-
         String filePath = "custommers.txt";
+        String content = fileManager.read(filePath);
 
-        FileManager fm = new FileManager();
-        String content = fm.read(filePath);
-        String[] elements = content.split("\n");
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
 
-        for (String element : elements) {
-            String[] values = element.split(";");
-
-            Custommer c = new Custommer(values[0], values[1], values[2], values[3], values[4]);
-            custommers.add(c);
+            Custommer custommer = new Custommer(
+                    values[0], values[1], values[2], values[3], values[4]
+            );
+            custommers.add(custommer);
         }
 
         return custommers;
     }
 
     public Custommer getCustommerByID(String id) {
-        for (Custommer c : getCustommer()) {
-            if (c.getID().equalsIgnoreCase(id)) {
-                return c;
-            }
-        }
-        return null;
+        return getCustommers().stream()
+                .filter(custommer -> custommer.getID().equalsIgnoreCase(id))
+                .findFirst()
+                .orElse(null);
     }
 
-    public List<MDTE> getMDTEs(){
+    public List<MDTE> getMDTEs() {
         List<MDTE> mdtes = new ArrayList<>();
         String filePath = "mdtes.txt";
+        String content = fileManager.read(filePath);
 
-        FileManager fm = new FileManager();
-        String content = fm.read(filePath);
-        String[] elements = content.split("\n");
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
 
-        for (String element : elements) {
-            String[] values = element.split(";");
-
-            MDTE m = new MDTE(values[0], values[1], Float.parseFloat(values[2]));
-            mdtes.add(m);
+            MDTE mdte = new MDTE(values[0], values[1], Float.parseFloat(values[2]));
+            mdtes.add(mdte);
         }
+
         return mdtes;
     }
 
     public MDTE getMDTEByID(String id) {
-        for (MDTE m : getMDTEs()) {
-            if (m.getID().equalsIgnoreCase(id)) {
-                return m;
-            }
-        }
-        return null;
+        return getMDTEs().stream()
+                .filter(mdte -> mdte.getID().equalsIgnoreCase(id))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Options> getOptions() {
         List<Options> options = new ArrayList<>();
         String filePath = "options.txt";
+        String content = fileManager.read(filePath);
 
-        FileManager fm = new FileManager();
-        String content = fm.read(filePath);
-        String[] elements = content.split("\n");
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
 
-        for (String element : elements) {
-            String[] values = element.split(";");
-
-            Options o = new Options(values[0], values[1], values[2], Integer.parseInt(values[3]));
-            options.add(o);
+            Options option = new Options(
+                    values[0], values[1], values[2], Integer.parseInt(values[3])
+            );
+            options.add(option);
         }
+
         return options;
     }
 
-    public static List<String> getOptionsByOrder(String input) {
+    public Options getOptionByID(String id) {
+        return getOptions().stream()
+                .filter(option -> option.getID().equalsIgnoreCase(id))
+                .findFirst()
+                .orElse(null);
+    }
 
+    public static List<String> getOptionsByOrder(String input) {
         if (input == null || input.length() < 2 || !input.startsWith("[") || !input.endsWith("]")) {
             throw new IllegalArgumentException("Format non valide");
         }
 
         String trimmedInput = input.substring(1, input.length() - 1);
-
-        String[] parts = trimmedInput.split(",");
-
         List<String> result = new ArrayList<>();
 
-        for (String part : parts) {
-            try {
-                result.add(part.trim());
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("La liste ne doit contenir que des nombres");
-            }
+        for (String part : trimmedInput.split(",")) {
+            result.add(part.trim());
         }
 
         return result;
     }
 
-    public Options getOptionByID(String id) {
-        for (Options o : getOptions()) {
-            if (o.getID().equalsIgnoreCase(id)) {
-                return o;
-            }
-        }
-        return null;
-    }
-
-    public List<Stock> getStocks(){
+    public List<Stock> getStocks() {
         List<Stock> stocks = new ArrayList<>();
         String filePath = "stocks.txt";
+        String content = fileManager.read(filePath);
 
-        FileManager fm = new FileManager();
-        String content = fm.read(filePath);
-        String[] elements = content.split("\n");
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
 
-        for (String element : elements) {
-            String[] values = element.split(";");
-
-            Stock s = new Stock(values[0], values[1], values[2], Integer.parseInt(values[3]));
-            stocks.add(s);
+            Stock stock = new Stock(
+                    values[0], values[1], values[2], Integer.parseInt(values[3])
+            );
+            stocks.add(stock);
         }
+
         return stocks;
     }
 
     public Stock getStockByRefOption(String refOpt) {
-        for (Stock s : getStocks()) {
-            if (s.getIDOption().equals(refOpt)) {
-                return s;
-            }
-        }
-        return null;
+        return getStocks().stream()
+                .filter(stock -> stock.getIDOption().equals(refOpt))
+                .findFirst()
+                .orElse(null);
     }
-
 }
