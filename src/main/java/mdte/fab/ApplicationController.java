@@ -16,6 +16,9 @@ public class ApplicationController {
     private Button RefreshButton;
 
     @FXML
+    private Label selectOrder_label;
+
+    @FXML
     private ListView<String> orders_listView, options_listView, stocks_listView;
 
     @FXML
@@ -33,12 +36,19 @@ public class ApplicationController {
 
     @FXML
     protected void onRefreshButtonClick() {
+        selectOrder_label.setVisible(true);
         List<Order> orders = modele.getOrder();
         orders_listView.getItems().clear();
         for (Order o : orders) {
             orders_listView.getItems().add(o.getID());
         }
         this._custommers = modele.getCustommer();
+
+        List<Stock> lesStocks = modele.getStocks();
+        stocks_listView.getItems().clear();
+        for (Stock s : lesStocks) {
+            stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
+        }
     }
 
     @FXML
@@ -46,9 +56,13 @@ public class ApplicationController {
         String selectedItem = (String) orders_listView.getSelectionModel().getSelectedItem();
         Order selectedOrder = modele.getOrderByID(selectedItem);
 
+        if (selectedOrder != null) {
+            selectOrder_label.setVisible(false);
+        }
+
         List<String> lesOptions = selectedOrder.getOptions();
         options_listView.getItems().clear();
-        stocks_listView.getItems().clear();
+        //stocks_listView.getItems().clear();
         for (String opt : lesOptions) {
             Options option = modele.getOptionByID(opt);
             try {
@@ -88,10 +102,10 @@ public class ApplicationController {
             List<String> lesOpts = selectedOrder.getOptions();
             for (String opt : lesOpts) {
                 Stock s = modele.getStockByRefOption(opt);
-                stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
+                //stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
             }
         } catch (Exception e){
-            stocks_listView.getItems().add("Erreur lors du chargement des Stocks");
+            //stocks_listView.getItems().add("Erreur lors du chargement des Stocks");
         }
     }
 

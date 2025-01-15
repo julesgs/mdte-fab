@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
 <VBox prefHeight="810.0" prefWidth="1290.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mdte.fab.ApplicationController">
   <children>
@@ -25,7 +26,14 @@
             <ListView fx:id="options_listView" layoutX="412.0" layoutY="169.0" prefHeight="153.0" prefWidth="711.0" />
             <Line endX="1009.2579345703125" endY="3.0517578125E-5" layoutX="210.0" layoutY="361.0" startX="-147.26280212402344" startY="3.0517578125E-5" stroke="#b5b5b5" />
             <Button fx:id="RefreshButton" layoutX="622.0" layoutY="754.0" mnemonicParsing="false" onAction="#onRefreshButtonClick" text="Rafraichir" />
-            <ListView fx:id="stocks_listView" layoutX="177.0" layoutY="401.0" prefHeight="237.0" prefWidth="292.0" />
+            <ListView fx:id="stocks_listView" layoutX="913.0" layoutY="417.0" prefHeight="237.0" prefWidth="292.0" />
+            <Line endX="656.0" endY="285.0" layoutX="185.0" layoutY="388.0" startX="656.0" startY="9.0" stroke="#b5b5b5" />
+            <Label layoutX="997.0" layoutY="389.0" text="Stocks disponibles :" />
+            <Label fx:id="selectOrder_label" layoutX="197.0" layoutY="522.0" prefHeight="28.0" prefWidth="479.0" text="Sélectionnez une commande pour commencer" textAlignment="RIGHT" textFill="#0022ff">
+               <font>
+                  <Font name="Roboto Medium" size="22.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
   </children>
 </VBox>
