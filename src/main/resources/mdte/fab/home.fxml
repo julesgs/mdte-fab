@@ -7,12 +7,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="810.0" prefWidth="1290.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mdte.fab.ApplicationController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
+            <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="139.0" layoutX="128.0" layoutY="455.0" stroke="BLACK" strokeType="INSIDE" width="374.0" />
             <ListView fx:id="orders_listView" layoutX="181.0" layoutY="26.0" onMouseClicked="#onSelectOrder" prefHeight="297.0" prefWidth="200.0" />
             <Label layoutX="418.0" layoutY="58.0" text="N° de commande" />
             <Label layoutX="633.0" layoutY="58.0" text="Client" />
@@ -29,9 +31,28 @@
             <ListView fx:id="stocks_listView" layoutX="913.0" layoutY="417.0" prefHeight="237.0" prefWidth="292.0" />
             <Line endX="656.0" endY="285.0" layoutX="185.0" layoutY="388.0" startX="656.0" startY="9.0" stroke="#b5b5b5" />
             <Label layoutX="997.0" layoutY="389.0" text="Stocks disponibles :" />
-            <Label fx:id="selectOrder_label" layoutX="197.0" layoutY="522.0" prefHeight="28.0" prefWidth="479.0" text="Sélectionnez une commande pour commencer" textAlignment="RIGHT" textFill="#0022ff">
+            <Label fx:id="selectOrder_label" layoutX="206.0" layoutY="520.0" prefHeight="32.0" prefWidth="462.0" text="Sélectionnez une commande pour commencer" textAlignment="RIGHT" textFill="#0026ff" visible="false">
                <font>
-                  <Font name="Roboto Medium" size="22.0" />
+                  <Font name="Arial Unicode MS" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="fabricationOrder_label" layoutX="268.0" layoutY="384.0" text="Fabrication de la commande">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="option_1_label" layoutX="150.0" layoutY="470.0" text="Label">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font></Label>
+            <Label fx:id="option_2_label" layoutX="150.0" layoutY="510.0" text="Label">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="option_3_label" layoutX="150.0" layoutY="550.0" text="Label">
+               <font>
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
          </children></AnchorPane>
