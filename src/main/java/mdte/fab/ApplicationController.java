@@ -67,7 +67,7 @@ public class ApplicationController {
 
     @FXML
     protected void onFabButtonClick() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
         Order selectedOrder = modele.getOrderByID(selectedItem);
