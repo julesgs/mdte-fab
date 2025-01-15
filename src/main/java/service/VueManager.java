@@ -4,11 +4,16 @@ import entite.Order;
 import entite.Stock;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.util.List;
+
 public class VueManager {
+
+    Modele modele = new Modele();
 
     public void showLabelDisponible(Label label, Stock s) {
         label.setStyle("-fx-text-fill: #24bf00;");
@@ -33,6 +38,15 @@ public class VueManager {
     public void showValueInField(TextField tf, String value) {
         tf.setStyle("-fx-font-style: normal;");
         tf.setText(value);
+    }
+
+    public void showError(Label label, String message) {
+        label.setStyle("-fx-text-fill: red;");
+        label.setText(message);
+    }
+
+    public void deleteError(Label label) {
+        label.setText("");
     }
 
 }

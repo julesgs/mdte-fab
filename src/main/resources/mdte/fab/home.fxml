@@ -12,7 +12,7 @@
 
 <VBox prefHeight="810.0" prefWidth="1290.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mdte.fab.ApplicationController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="label_error" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
             <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="139.0" layoutX="128.0" layoutY="455.0" stroke="BLACK" strokeType="INSIDE" width="374.0" />
             <ListView fx:id="orders_listView" layoutX="181.0" layoutY="26.0" onMouseClicked="#onSelectOrder" prefHeight="297.0" prefWidth="200.0" />
@@ -55,6 +55,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
+            <Label fx:id="error_label" layoutX="95.0" layoutY="335.0" text="label_error" />
          </children></AnchorPane>
   </children>
 </VBox>

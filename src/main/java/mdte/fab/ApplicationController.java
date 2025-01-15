@@ -15,21 +15,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ApplicationController {
+
     @FXML
     private Button RefreshButton;
-
     @FXML
-    private Label selectOrder_label, fabricationOrder_label, option_1_label, option_2_label, option_3_label;
-
+    private Label selectOrder_label, fabricationOrder_label, option_1_label, option_2_label, option_3_label, error_label;
     @FXML
     private ListView<String> orders_listView, options_listView, stocks_listView;
-
     @FXML
     private TextField numOrder_field, custommer_field, mdte_field, price_field;
-
     @FXML
     private Rectangle rectangle;
-
     private List<Custommer> _custommers;
 
 
@@ -43,24 +39,14 @@ public class ApplicationController {
 
     @FXML
     protected void onRefreshButtonClick() {
-        selectOrder_label.setVisible(true);
-        fabricationOrder_label.setVisible(false);
+            selectOrder_label.setVisible(true);
+            fabricationOrder_label.setVisible(false);
 
-        showOptionsLabels(false);
-
-        List<Order> orders = modele.getOrder();
-        orders_listView.getItems().clear();
-        for (Order o : orders) {
-            orders_listView.getItems().add(o.getID());
-        }
-        this._custommers = modele.getCustommer();
-
-        List<Stock> lesStocks = modele.getStocks();
-        stocks_listView.getItems().clear();
-        for (Stock s : lesStocks) {
-            stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
-        }
+            showOptionsLabels(false);
+            showOrders();
+            showStocks();
     }
+
 
     @FXML
     protected void onSelectOrder() {
@@ -140,6 +126,7 @@ public class ApplicationController {
     }
 
 
+
     //Fonctions d'affichage
 
     private void showOptionsLabels(boolean show) {
@@ -155,4 +142,34 @@ public class ApplicationController {
         mdte_field.setEditable(false);
         price_field.setEditable(false);
     }
+
+    private void showOrders() {
+        try {
+            vueManager.deleteError(error_label);
+            List<Order> orders = modele.getOrder();
+            orders_listView.getItems().clear();
+            for (Order o : orders) {
+                orders_listView.getItems().add(o.getID());
+            }
+        } catch (Exception e) {
+            String message = "Une erreur s'est produite lors du chargement des commandes :" + e.getMessage();
+            vueManager.showError(error_label, message);
+        }
+    }
+
+    private void showStocks() {
+        try {
+            vueManager.deleteError(error_label);
+            List<Stock> stocks = modele.getStocks();
+            stocks_listView.getItems().clear();
+            for (Stock s : stocks) {
+                stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
+            }
+        }catch (Exception e){
+            String message = "Une erreur s'est produite lors du chargement des stocks :" + e.getMessage();
+            vueManager.showError(error_label, message);
+        }
+
+    }
+
 }
