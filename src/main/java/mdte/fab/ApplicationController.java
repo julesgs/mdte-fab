@@ -13,7 +13,7 @@ import java.util.List;
 public class ApplicationController {
 
     @FXML
-    private Button RefreshButton;
+    private Button RefreshButton, fab_button;
     @FXML
     private Label selectOrder_label, fabricationOrder_label, option_1_label, option_2_label, option_3_label, error_label;
     @FXML
@@ -75,6 +75,17 @@ public class ApplicationController {
         option_2_label.setVisible(show);
         option_3_label.setVisible(show);
         rectangle.setVisible(show);
+        fab_button.setVisible(show);
+    }
+
+    private void blockFabrication(){
+        fab_button.setDisable(true);
+        fab_button.setStyle("-fx-background-color: #c4c4c4");
+    }
+
+    private void unlockFabrication(){
+        fab_button.setDisable(false);
+        fab_button.setStyle("-fx-font-style: normal;");
     }
 
     private void setNoEditableFields() {
@@ -134,6 +145,7 @@ public class ApplicationController {
 
     private void showFabricationPannel(Order o) {
         try {
+
             selectOrder_label.setVisible(false);
             fabricationOrder_label.setVisible(true);
             fabricationOrder_label.setText("Fabrication de la commande " + o.getID());
@@ -142,9 +154,12 @@ public class ApplicationController {
             List<String> lesOpts = o.getOptions();
             List<Label> labels = Arrays.asList(option_1_label, option_2_label, option_3_label);
 
+            unlockFabrication();
+
             for (int i = 0; i < lesOpts.size(); i++) {
                 String opt = lesOpts.get(i);
                 Stock s = modele.getStockByRefOption(opt);
+
 
                 if (i < labels.size()) {
                     Label currentLabel = labels.get(i);
@@ -152,6 +167,7 @@ public class ApplicationController {
                         vueManager.showLabelDisponible(currentLabel, s);
                     } else {
                         vueManager.showLabelIndisponible(currentLabel, s);
+                        blockFabrication();
                     }
                 }
             }

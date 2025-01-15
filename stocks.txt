@@ -1,3 +1,4 @@
 s1;R18;Rack1;15
 s2;KBA;Rack1;0
 s3;B250;Rack1;5
+s4;KBAOK;Rack1;12

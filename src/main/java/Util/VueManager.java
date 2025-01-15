@@ -27,14 +27,14 @@ public class VueManager {
         tf.setText("");
     }
 
-    public void showValueInField(TextField tf, String value) {
-        tf.setStyle("-fx-font-style: normal;");
-        tf.setText(value);
-    }
-
     public void showError(Label label, String message) {
         label.setStyle("-fx-text-fill: red;");
         label.setText(message);
+    }
+
+    public void showValueInField(TextField tf, String value) {
+        tf.setStyle("-fx-font-style: normal;");
+        tf.setText(value);
     }
 
     public void deleteError(Label label) {
