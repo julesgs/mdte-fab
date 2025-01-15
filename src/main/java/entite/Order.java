@@ -34,9 +34,7 @@ public class Order {
         return String.valueOf(_mdteId);
     }
 
-    public List<String> getOptions() {
-        return _options;
-    }
+    public List<String> getOptions() { return _options; }
 
     public String getTotalPrice() {
         return String.valueOf(_totalPrice);

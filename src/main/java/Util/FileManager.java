@@ -1,49 +1,37 @@
 package Util;
 
-import entite.Custommer;
-import entite.Order;
-
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FileManager {
 
-    public FileManager() {}
-
     public void write(String filePath, String content) {
+        File file = new File(filePath);
 
-        File nomFichier = new File(filePath);
-
-        try {
-
-            FileOutputStream flux = new FileOutputStream(nomFichier, true);
-            flux.write(content.getBytes());
-            flux.close();
-
-        } catch ( FileNotFoundException e ){
-
-            System.out.println(e.getMessage());
-
+        try (FileOutputStream fos = new FileOutputStream(file, true)) {
+            fos.write(content.getBytes());
+        } catch (FileNotFoundException e) {
+            System.out.println("Fichier introuvable : " + e.getMessage());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Erreur d'écriture dans le fichier : " + e.getMessage(), e);
         }
     }
 
+
     public String read(String filePath) {
-        File nomFichier = new File(filePath);
+        File file = new File(filePath);
         StringBuilder content = new StringBuilder();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(nomFichier))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 content.append(line).append("\n");
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Fichier introuvable : " + e.getMessage());
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur de lecture du fichier : " + e.getMessage());
         }
 
-        return content.toString();
+        return content.toString().trim();
     }
 }
-
