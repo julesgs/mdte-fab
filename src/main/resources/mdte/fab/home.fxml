@@ -14,7 +14,7 @@
   <children>
     <AnchorPane fx:id="label_error" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="139.0" layoutX="128.0" layoutY="455.0" stroke="BLACK" strokeType="INSIDE" width="374.0" />
+            <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="139.0" layoutX="128.0" layoutY="455.0" stroke="#ffffff00" strokeType="INSIDE" width="374.0" />
             <ListView fx:id="orders_listView" layoutX="181.0" layoutY="26.0" onMouseClicked="#onSelectOrder" prefHeight="297.0" prefWidth="200.0" />
             <Label layoutX="418.0" layoutY="58.0" text="N° de commande" />
             <Label layoutX="633.0" layoutY="58.0" text="Client" />
