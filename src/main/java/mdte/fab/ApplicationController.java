@@ -9,6 +9,7 @@ import Util.VueManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ApplicationController {
 
@@ -61,6 +62,25 @@ public class ApplicationController {
         } catch (Exception e) {
             String message = "Impossible de récupèrer les détails de la commande " + selectedItem + " : " + e.getMessage();
             vueManager.showError(error_label, message);
+        }
+    }
+
+    @FXML
+    protected void onFabButtonClick() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+
+        String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
+        Order selectedOrder = modele.getOrderByID(selectedItem);
+
+        StringBuilder s = getStocksAfterFab(selectedOrder);
+
+        alert.setTitle("Confirmer la fabrication ?");
+        alert.setHeaderText("Contenu des stocks après fabrication :");
+        alert.setContentText(s.toString());
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.out.println("Continuer");
         }
     }
 
@@ -205,6 +225,16 @@ public class ApplicationController {
             String message = "Impossible de récupérer le nom du MDTE";
             vueManager.showError(error_label, message);
         }
+    }
+
+    private StringBuilder getStocksAfterFab(Order o) {
+        List<String> options = o.getOptions();
+        StringBuilder s = new StringBuilder();
+        for (String opt : options) {
+            Stock stock = modele.getStockByRefOption(opt);
+            s.append(stock.getID()).append(" => ").append(stock.getQuantity() - 1).append(" unités \n");
+        }
+        return s;
     }
 
 }
