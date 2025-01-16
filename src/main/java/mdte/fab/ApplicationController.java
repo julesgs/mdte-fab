@@ -179,6 +179,7 @@ public class ApplicationController {
 
             List<String> lesOpts = o.getOptions();
             List<Label> labels = Arrays.asList(option_1_label, option_2_label, option_3_label);
+            List<TextField> fields = Arrays.asList(option_1_field, option_2_field, option_3_field);
 
             unlockFabrication();
 
@@ -189,10 +190,14 @@ public class ApplicationController {
 
                 if (i < labels.size()) {
                     Label currentLabel = labels.get(i);
+                    TextField currentField = fields.get(i);
+
                     if (s.getQuantity() > 0) {
                         vueManager.showLabelDisponible(currentLabel, s);
+                        vueManager.enableField(currentField);
                     } else {
                         vueManager.showLabelIndisponible(currentLabel, s);
+                        vueManager.disableField(currentField);
                         blockFabrication();
                     }
                 }

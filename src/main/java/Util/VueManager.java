@@ -41,4 +41,13 @@ public class VueManager {
         label.setText("");
     }
 
+    public void disableField(TextField tf) {
+        tf.setDisable(true);
+    }
+
+    public void enableField(TextField tf) {
+        tf.setDisable(false);
+    }
+
+
 }
