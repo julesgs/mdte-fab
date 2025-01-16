@@ -32,6 +32,7 @@ public class ApplicationController {
     public void initialize() {
         onRefreshButtonClick();
         setNoEditableFields();
+        setListeners();
     }
 
     @FXML
@@ -247,4 +248,12 @@ public class ApplicationController {
         return s;
     }
 
-}
+    private void setListeners() {
+        option_1_field.textProperty().addListener((observable, oldValue, value) -> {
+            controlQte(value);
+        });
+    }
+
+    private void controlQte(String value) {
+        System.out.println(value);
+    }}
