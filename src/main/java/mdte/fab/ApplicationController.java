@@ -110,7 +110,7 @@ public class ApplicationController {
         fab_button.setStyle("-fx-background-color: #c4c4c4");
     }
 
-    private void unlockFabrication(){
+    private void unlockFabrication(Order o){
         fab_button.setDisable(false);
         fab_button.setStyle("-fx-font-style: normal;");
     }
@@ -182,12 +182,11 @@ public class ApplicationController {
             List<Label> labels = Arrays.asList(option_1_label, option_2_label, option_3_label);
             List<TextField> fields = Arrays.asList(option_1_field, option_2_field, option_3_field);
 
-            unlockFabrication();
+            unlockFabrication(o);
 
             for (int i = 0; i < lesOpts.size(); i++) {
                 String opt = lesOpts.get(i);
                 Stock s = modele.getStockByRefOption(opt);
-
 
                 if (i < labels.size()) {
                     Label currentLabel = labels.get(i);
@@ -255,5 +254,10 @@ public class ApplicationController {
     }
 
     private void controlQte(String value) {
-        System.out.println(value);
+
+        String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
+        Order selectedOrder = modele.getOrderByID(selectedItem);
+        List<String> lesOptions = selectedOrder.getOptions();
+
+        System.out.println(lesOptions.get(1));
     }}
