@@ -149,7 +149,7 @@ public class ApplicationController {
             List<Stock> stocks = modele.getStocks();
             stocks_listView.getItems().clear();
             for (Stock s : stocks) {
-                stocks_listView.getItems().add(s.getID() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
+                stocks_listView.getItems().add(s.getIDOption() + "    =>    " + s.getQuantity() + " pièce(s) disponibles");
             }
         } catch (Exception e) {
             String message = "Une erreur s'est produite lors du chargement des stocks :" + e.getMessage();
@@ -249,15 +249,37 @@ public class ApplicationController {
 
     private void setListeners() {
         option_1_field.textProperty().addListener((observable, oldValue, value) -> {
-            controlQte(value);
+            controlQte(value, 0);
         });
     }
 
-    private void controlQte(String value) {
+    private void controlQte(String value, Integer numOption) {
 
         String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
         Order selectedOrder = modele.getOrderByID(selectedItem);
         List<String> lesOptions = selectedOrder.getOptions();
 
-        System.out.println(lesOptions.get(1));
+        String selectedOption = lesOptions.get(numOption);
+        Stock selectedStock = modele.getStockByRefOption(selectedOption);
+
+        Integer qteMax = selectedStock.getQuantity();
+
+        try {
+            vueManager.deleteError(error_label);
+            if (Integer.parseInt(value) > qteMax) {
+                vueManager.setFieldError2(option_1_field);
+                vueManager.showError(error_label, "Pas assez de pièces pour " + selectedStock.getIDOption());
+            } else {
+                vueManager.reEnableField(option_1_field);
+            }
+        } catch (Exception e) {
+            if (option_1_field.getText().isEmpty()) {
+
+            } else {
+                vueManager.showError(error_label, "Veuillez saisir une valeur numérique");
+            }
+
+        }
+
+
     }}
