@@ -14,7 +14,7 @@
   <children>
     <AnchorPane fx:id="label_error" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="139.0" layoutX="128.0" layoutY="455.0" stroke="#ffffff00" strokeType="INSIDE" width="374.0" />
+            <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="139.0" layoutX="128.0" layoutY="455.0" stroke="#ffffff00" strokeType="INSIDE" width="319.0" />
             <ListView fx:id="orders_listView" layoutX="181.0" layoutY="26.0" onMouseClicked="#onSelectOrder" prefHeight="297.0" prefWidth="200.0" />
             <Label layoutX="418.0" layoutY="58.0" text="N° de commande" />
             <Label layoutX="633.0" layoutY="58.0" text="Client" />
@@ -57,6 +57,12 @@
             </Label>
             <Label fx:id="error_label" layoutX="95.0" layoutY="335.0" text="label_error" />
             <Button fx:id="fab_button" layoutX="632.0" layoutY="522.0" mnemonicParsing="false" onAction="#onFabButtonClick" text="Fabriquer" />
+            <TextField fx:id="option_1_field" layoutX="473.0" layoutY="471.0" prefHeight="26.0" prefWidth="45.0" />
+            <TextField fx:id="option_2_field" layoutX="473.0" layoutY="511.0" prefHeight="26.0" prefWidth="45.0" />
+            <TextField fx:id="option_3_field" layoutX="473.0" layoutY="551.0" prefHeight="26.0" prefWidth="45.0" />
+            <Label fx:id="label_x" layoutX="460.0" layoutY="476.0" text="x" />
+            <Label fx:id="label_x1" layoutX="460.0" layoutY="516.0" text="x" />
+            <Label fx:id="label_x2" layoutX="460.0" layoutY="556.0" text="x" />
          </children></AnchorPane>
   </children>
 </VBox>

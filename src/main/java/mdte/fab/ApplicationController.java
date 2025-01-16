@@ -16,11 +16,11 @@ public class ApplicationController {
     @FXML
     private Button RefreshButton, fab_button;
     @FXML
-    private Label selectOrder_label, fabricationOrder_label, option_1_label, option_2_label, option_3_label, error_label;
+    private Label selectOrder_label, fabricationOrder_label, option_1_label, option_2_label, option_3_label, error_label, label_x, label_x1, label_x2;
     @FXML
     private ListView<String> orders_listView, options_listView, stocks_listView;
     @FXML
-    private TextField numOrder_field, custommer_field, mdte_field, price_field;
+    private TextField numOrder_field, custommer_field, mdte_field, price_field, option_1_field, option_2_field, option_3_field;
     @FXML
     private Rectangle rectangle;
     private List<Custommer> _custommers;
@@ -86,9 +86,9 @@ public class ApplicationController {
 
 
 
-    /* ############################
+    /*\ ############################
     ||   Fonctions d'affichage    ||
-    ############################# */
+    ############################# \*/
 
     private void showOptionsLabels(boolean show) {
         option_1_label.setVisible(show);
@@ -96,6 +96,12 @@ public class ApplicationController {
         option_3_label.setVisible(show);
         rectangle.setVisible(show);
         fab_button.setVisible(show);
+        label_x.setVisible(show);
+        label_x1.setVisible(show);
+        label_x2.setVisible(show);
+        option_1_field.setVisible(show);
+        option_2_field.setVisible(show);
+        option_3_field.setVisible(show);
     }
 
     private void blockFabrication(){
@@ -193,7 +199,6 @@ public class ApplicationController {
             }
         } catch (Exception e) {
             vueManager.showErrorStocks(option_1_label, o);
-
             showOptionsLabels(false);
             option_1_label.setVisible(true);
         }
