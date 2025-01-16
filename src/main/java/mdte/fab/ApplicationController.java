@@ -251,6 +251,14 @@ public class ApplicationController {
         option_1_field.textProperty().addListener((observable, oldValue, value) -> {
             controlQte(value, 0);
         });
+
+        option_2_field.textProperty().addListener((observable, oldValue, value) -> {
+            controlQte(value, 1);
+        });
+
+        option_2_field.textProperty().addListener((observable, oldValue, value) -> {
+            controlQte(value, 2);
+        });
     }
 
     private void controlQte(String value, Integer numOption) {
@@ -264,22 +272,21 @@ public class ApplicationController {
 
         Integer qteMax = selectedStock.getQuantity();
 
+        List<TextField> fields = Arrays.asList(option_1_field, option_2_field, option_3_field);
+
         try {
             vueManager.deleteError(error_label);
             if (Integer.parseInt(value) > qteMax) {
-                vueManager.setFieldError2(option_1_field);
+                vueManager.setFieldError2(fields.get(numOption));
                 vueManager.showError(error_label, "Pas assez de pièces pour " + selectedStock.getIDOption());
             } else {
-                vueManager.reEnableField(option_1_field);
+                vueManager.reEnableField(fields.get(numOption));
             }
         } catch (Exception e) {
-            if (option_1_field.getText().isEmpty()) {
-
+            if (fields.get(numOption).getText().isEmpty()) {
             } else {
                 vueManager.showError(error_label, "Veuillez saisir une valeur numérique");
             }
-
         }
-
 
     }}
