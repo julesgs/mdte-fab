@@ -9,12 +9,12 @@ public class VueManager {
 
     public void showLabelDisponible(Label label, Stock s) {
         label.setStyle("-fx-text-fill: #24bf00;");
-        label.setText(s.getID() + "   -   Disponible");
+        label.setText(s.getIDOption() + "   -   Disponible");
     }
 
     public void showLabelIndisponible(Label label, Stock s) {
         label.setStyle("-fx-text-fill: red;");
-        label.setText(s.getID() + "   -   Indisponible");
+        label.setText(s.getIDOption() + "   -   Indisponible");
     }
 
     public void showErrorStocks(Label label, Order o) {

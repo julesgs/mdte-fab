@@ -49,4 +49,12 @@
     -fx-font-weight: bold;
 }
 
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+}
 
+.scroll-bar .thumb {
+    -fx-background-color: #9aa49f;
+    -fx-background-radius: 5;
+}

@@ -110,7 +110,7 @@ public class ApplicationController {
         fab_button.setStyle("-fx-background-color: #c4c4c4");
     }
 
-    private void unlockFabrication(Order o){
+    private void unlockFabrication(){
         fab_button.setDisable(false);
         fab_button.setStyle("-fx-font-style: normal;");
     }
@@ -182,7 +182,7 @@ public class ApplicationController {
             List<Label> labels = Arrays.asList(option_1_label, option_2_label, option_3_label);
             List<TextField> fields = Arrays.asList(option_1_field, option_2_field, option_3_field);
 
-            unlockFabrication(o);
+            unlockFabrication();
 
             for (int i = 0; i < lesOpts.size(); i++) {
                 String opt = lesOpts.get(i);
@@ -277,14 +277,17 @@ public class ApplicationController {
         try {
             vueManager.deleteError(error_label);
             if (Integer.parseInt(value) > qteMax) {
+                blockFabrication();
                 vueManager.setFieldError2(fields.get(numOption));
                 vueManager.showError(error_label, "Pas assez de pièces pour " + selectedStock.getIDOption());
             } else {
                 vueManager.reEnableField(fields.get(numOption));
+                unlockFabrication();
             }
         } catch (Exception e) {
             if (fields.get(numOption).getText().isEmpty()) {
             } else {
+                blockFabrication();
                 vueManager.showError(error_label, "Veuillez saisir une valeur numérique");
             }
         }
