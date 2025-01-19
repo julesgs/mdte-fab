@@ -1,14 +1,17 @@
 package service;
 
 import Util.FileManager;
+import Util.VueManager;
 import entite.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Modele {
 
     private final FileManager fileManager = new FileManager();
+    private final VueManager vueManager = new VueManager();
 
     public List<Order> getOrders() {
         List<Order> orders = new ArrayList<>();
@@ -148,5 +151,29 @@ public class Modele {
                 .filter(stock -> stock.getIDOption().equals(refOpt))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public void validateOrder(Order order, Integer qteStock1, Integer qteStock2, Integer qteStock3) {
+        try {
+            List<Stock> stocks = new ArrayList<>();
+
+            for (String option : order.getOptions()) {
+                Stock s = getStockByRefOption(option);
+                stocks.add(s);
+            }
+
+            List<Integer> qtes = Arrays.asList(qteStock1, qteStock2, qteStock3);
+            Integer i = 0;
+            for (Stock stock : stocks) {
+                Stock updatedStock = new Stock(stock.getID(), stock.getIDOption(), stock.getIDRack(), (stock.getQuantity()-qtes.get(i)));
+                i +=1;
+            }
+
+            // A mettre à jour en fonction du state décidé
+            Order updatedOrder = new Order(order.getID(), order.getClientID(), order.getMdteID(), order.getOptions(), order.getTotalPrice(), 2, order.getTrackingNumber());
+
+        } catch (Exception e){
+            throw new IllegalArgumentException("Une erreur est survenue lors de la validation de la commande");
+        }
     }
 }

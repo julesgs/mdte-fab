@@ -81,7 +81,11 @@ public class ApplicationController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            System.out.println("Continuer");
+            Integer qteStock1 = Integer.parseInt(option_1_field.getText());
+            Integer qteStock2 = Integer.parseInt(option_2_field.getText());
+            Integer qteStock3 = Integer.parseInt(option_3_field.getText());
+
+            modele.validateOrder(selectedOrder, qteStock1, qteStock2, qteStock3);
         }
     }
 
@@ -210,7 +214,7 @@ public class ApplicationController {
 
     private void showClientName(Order o) {
         try {
-            String clientID = o.getClientID();
+            String clientID = o.getClientID().toString();
             Custommer client = modele.getCustommerByID(clientID);
             String clientName = client.getFirstName() + " " + client.getLastName();
             vueManager.showValueInField(custommer_field, clientName);
@@ -224,9 +228,8 @@ public class ApplicationController {
 
     private void showMDTEName(Order o) {
         try {
-            String mdteID = o.getMdteID();
+            String mdteID = o.getMdteID().toString();
             String mdteName = modele.getMDTEByID(mdteID).getName();
-
             vueManager.showValueInField(mdte_field, mdteName);
 
         } catch (Exception e) {
@@ -301,5 +304,4 @@ public class ApplicationController {
                 vueManager.showError(error_label, "Veuillez saisir une valeur numérique");
             }
         }
-
     }}

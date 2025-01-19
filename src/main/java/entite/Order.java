@@ -26,18 +26,19 @@ public class Order {
         return _id;
     }
 
-    public String getClientID() {
-        return String.valueOf(_clientId);
+    public Integer getClientID() {
+        return _clientId;
     }
 
-    public String getMdteID() {
-        return String.valueOf(_mdteId);
+
+    public Integer getMdteID() {
+        return _mdteId;
     }
 
     public List<String> getOptions() { return _options; }
 
-    public String getTotalPrice() {
-        return String.valueOf(_totalPrice);
+    public Float getTotalPrice() {
+        return _totalPrice;
     }
 
     public String getState() {
