@@ -187,7 +187,6 @@ public class ApplicationController {
             for (int i = 0; i < lesOpts.size(); i++) {
                 String opt = lesOpts.get(i);
                 Stock s = modele.getStockByRefOption(opt);
-
                 if (i < labels.size()) {
                     Label currentLabel = labels.get(i);
                     TextField currentField = fields.get(i);
@@ -240,9 +239,20 @@ public class ApplicationController {
     private StringBuilder getStocksAfterFab(Order o) {
         List<String> options = o.getOptions();
         StringBuilder s = new StringBuilder();
+        List<TextField> fields = Arrays.asList(option_1_field, option_2_field, option_3_field);
+        int i = 0;
         for (String opt : options) {
+
+            Integer qteSaisie = 0;
+            try {
+                qteSaisie = Integer.parseInt(fields.get(i).getText());
+            } catch (NumberFormatException e) {
+                vueManager.showError(error_label, "Attention ! Certains champs n'ont pas de quantité renseignée (valeur par défaut : 0)");
+            }
+
             Stock stock = modele.getStockByRefOption(opt);
-            s.append(stock.getID()).append(" => ").append(stock.getQuantity() - 1).append(" unités \n");
+            s.append(stock.getID()).append(" => ").append(stock.getQuantity() - qteSaisie).append(" unités \n");
+            i += 1;
         }
         return s;
     }
