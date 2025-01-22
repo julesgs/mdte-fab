@@ -51,9 +51,7 @@ public class Modele {
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
 
-            Custommer custommer = new Custommer(
-                    values[0], values[1], values[2], values[3], values[4]
-            );
+            Custommer custommer = new Custommer(values[0], values[1], values[2], values[3], values[4]);
             custommers.add(custommer);
         }
 
