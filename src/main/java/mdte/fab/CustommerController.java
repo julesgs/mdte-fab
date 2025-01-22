@@ -1,9 +1,8 @@
 package mdte.fab;
 
-import entite.Custommer;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import service.Modele;
+import Modele.Modele;
 
 public class CustommerController {
 

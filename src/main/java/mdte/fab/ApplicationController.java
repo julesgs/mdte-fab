@@ -4,8 +4,8 @@ import entite.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.shape.Rectangle;
-import service.Modele;
-import Util.VueManager;
+import Modele.Modele;
+import Services.VueManager;
 
 import java.util.Arrays;
 import java.util.List;

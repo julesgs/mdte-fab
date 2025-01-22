@@ -1,7 +1,7 @@
-package service;
+package Modele;
 
-import Util.FileManager;
-import Util.VueManager;
+import Services.FileManager;
+import Services.VueManager;
 import entite.*;
 
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public class Modele {
             );
             orders.add(order);
         }
-
         return orders;
     }
 
