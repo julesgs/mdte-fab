@@ -139,7 +139,9 @@ public class ApplicationController {
             List<Order> orders = modele.getOrders();
             orders_listView.getItems().clear();
             for (Order o : orders) {
-                orders_listView.getItems().add(o.getID());
+                if (o.getState() != 6){
+                    orders_listView.getItems().add(o.getID());
+                }
             }
         } catch (Exception e) {
             String message = "Une erreur s'est produite lors du chargement des commandes :" + e.getMessage();

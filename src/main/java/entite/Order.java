@@ -41,8 +41,8 @@ public class Order {
         return _totalPrice;
     }
 
-    public String getState() {
-        return String.valueOf(_state);
+    public Integer getState() {
+        return _state;
     }
 
     public String getTrackingNumber() {
