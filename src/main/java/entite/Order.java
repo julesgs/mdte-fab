@@ -30,12 +30,13 @@ public class Order {
         return _clientId;
     }
 
-
     public Integer getMdteID() {
         return _mdteId;
     }
 
-    public List<String> getOptions() { return _options; }
+    public List<String> getOptions() {
+        return _options;
+    }
 
     public Float getTotalPrice() {
         return _totalPrice;
@@ -47,5 +48,9 @@ public class Order {
 
     public String getTrackingNumber() {
         return _trackingNumber;
+    }
+
+    public String toString() {
+        return _id + ";" + _clientId + ";" + _mdteId + ";" + _options + ";" + _totalPrice + ";" + 6 + ";" + _trackingNumber + "\n";
     }
 }

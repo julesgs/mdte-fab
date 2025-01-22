@@ -29,4 +29,8 @@ public class Stock {
         return _quantity;
     }
 
+    public String toString() {
+        return "\n" + _id + ";" + _idOption + ";" + _idRack + ";" + _quantity + "\n";
+    }
+
 }

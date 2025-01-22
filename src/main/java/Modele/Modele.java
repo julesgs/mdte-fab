@@ -160,16 +160,17 @@ public class Modele {
             }
 
             List<Integer> qtes = Arrays.asList(qteStock1, qteStock2, qteStock3);
-            Integer i = 0;
+
+            int i = 0;
             for (Stock stock : stocks) {
                 Stock updatedStock = new Stock(stock.getID(), stock.getIDOption(), stock.getIDRack(), (stock.getQuantity()-qtes.get(i)));
                 i +=1;
 
-                fileManager.write("stocks.txt", "test updated stock " + i + "\n");
+                fileManager.write("stocks.txt",  updatedStock.toString());
             }
 
             Order updatedOrder = new Order(order.getID(), order.getClientID(), order.getMdteID(), order.getOptions(), order.getTotalPrice(), 6, order.getTrackingNumber());
-            fileManager.write("orders.txt", "test updated order \n");
+            fileManager.write("orders.txt", updatedOrder.toString());
 
         } catch (Exception e){
             throw new IllegalArgumentException("Une erreur est survenue lors de la validation de la commande");
