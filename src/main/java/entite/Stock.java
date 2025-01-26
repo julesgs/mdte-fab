@@ -30,7 +30,7 @@ public class Stock {
     }
 
     public String toString() {
-        return "\n" + _id + ";" + _idOption + ";" + _idRack + ";" + _quantity + "\n";
+        return _id + ";" + _idOption + ";" + _idRack + ";" + _quantity + "\n";
     }
 
 }
