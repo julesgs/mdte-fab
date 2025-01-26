@@ -1,5 +1,6 @@
 package mdte.fab;
 
+import Services.DBConnector;
 import entite.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -27,12 +28,14 @@ public class ApplicationController {
 
     private final Modele modele = new Modele();
     private final VueManager vueManager = new VueManager();
+    private final DBConnector dbConnector = new DBConnector();
 
 
     public void initialize() {
         onRefreshButtonClick();
         setNoEditableFields();
         setListeners();
+        dbConnector.getConnection();
     }
 
     @FXML
