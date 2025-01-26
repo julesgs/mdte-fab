@@ -1,12 +1,10 @@
 package Services;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DBConnector {
 
-    public Connection getConnection() {
+    public Connection getConnection() throws Exception {
         String url = "jdbc:mysql://localhost:8889/fab";
         String user = "root";
         String password = "root";
@@ -18,13 +16,24 @@ public class DBConnector {
             connection = DriverManager.getConnection(url, user, password);
             System.out.println("Connexion réussie à la base de données !");
         } catch (ClassNotFoundException e) {
-            System.out.println("Erreur : Driver MySQL introuvable.");
-            e.printStackTrace();
+            throw new Exception("Connexion BDD : Le driver n'a pas été trouvé");
         } catch (SQLException e) {
-            System.out.println("Erreur lors de la connexion à la base de données.");
-            e.printStackTrace();
+            throw new Exception("Erreur lors de la connexion à la base de données.");
         }
 
         return connection;
+    }
+
+    public void getFromBDD() {
+        try (Connection conn = this.getConnection()) {
+            if (conn != null) {
+                Statement stmt = conn.createStatement();
+                String query = "SELECT * from test";
+                ResultSet rs = stmt.executeQuery(query);
+                System.out.println(rs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

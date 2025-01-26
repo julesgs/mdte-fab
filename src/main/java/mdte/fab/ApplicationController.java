@@ -35,7 +35,13 @@ public class ApplicationController {
         onRefreshButtonClick();
         setNoEditableFields();
         setListeners();
-        dbConnector.getConnection();
+        try {
+            dbConnector.getConnection();
+            dbConnector.getFromBDD();
+        } catch (Exception e) {
+            vueManager.showError(error_label, e.getMessage());
+        }
+
     }
 
     @FXML
