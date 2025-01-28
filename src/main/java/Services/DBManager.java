@@ -59,7 +59,7 @@ public class DBManager {
     public void getCustommersForBDD() {
         List<Custommer> custommers = new ArrayList<>();
         String filePath = "custommers.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -96,7 +96,7 @@ public class DBManager {
     public void getMDTEsForBDD() throws Exception {
         List<MDTE> mdtes = new ArrayList<>();
         String filePath = "mdtes.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -138,7 +138,7 @@ public class DBManager {
     public void getOptionsForBDD() throws Exception {
         List<Options> options = new ArrayList<>();
         String filePath = "options.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -182,7 +182,7 @@ public class DBManager {
     public void getStocksForBDD() throws Exception {
         List<Stock> stocks = new ArrayList<>();
         String filePath = "stocks.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");

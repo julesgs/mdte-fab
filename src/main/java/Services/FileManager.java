@@ -39,63 +39,62 @@ public class FileManager {
 
     // ========================== LECTURE ==========================
 
-    public String read(String filePath) {
+    public String read(String filePath, boolean isFTP) {
 
-        File file = new File(filePath);
         StringBuilder content = new StringBuilder();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Fichier introuvable : " + e.getMessage());
-        } catch (IOException e) {
-            System.out.println("Erreur de lecture du fichier : " + e.getMessage());
-        }
+        if (!isFTP) {
+            File file = new File(filePath);
 
-        return content.toString().trim();
-    }
-
-    public void readFTP() throws IOException {
-        String server = "ftpperso.free.fr";
-        int port = 21;
-        String user = "pottarn";
-        String pass = "cydeaxch0";
-
-        FTPClient ftpClient = new FTPClient();
-
-        try {
-            // Connexion au serveur FTP
-            ftpClient.connect(server, port);
-            ftpClient.login(user, pass);
-            ftpClient.enterLocalPassiveMode();
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-
-            // Chemin du fichier à lire
-            String ftpPath = "/CCI/readme.txt";
-
-            // Téléchargement du fichier en mémoire
-            InputStream inputStream = ftpClient.retrieveFileStream(ftpPath);
-            if (inputStream != null) {
-                // Lecture du contenu du fichier
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        System.out.println(line);
-                    }
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    content.append(line).append("\n");
                 }
-                ftpClient.completePendingCommand();
-            } else {
-                System.out.println("Impossible d'ouvrir le fichier !");
+            } catch (FileNotFoundException e) {
+                System.out.println("Fichier introuvable : " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Erreur de lecture du fichier : " + e.getMessage());
             }
 
-            // Déconnexion du serveur
-            ftpClient.logout();
-            ftpClient.disconnect();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            return content.toString().trim();
+        } else {
+            String server = "ftpperso.free.fr";
+            int port = 21;
+            String user = "pottarn";
+            String pass = "cydeaxch0";
+
+            FTPClient ftpClient = new FTPClient();
+
+            try {
+
+                ftpClient.connect(server, port);
+                ftpClient.login(user, pass);
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+                String ftpPath = "/CCI/" + filePath;
+
+                InputStream inputStream = ftpClient.retrieveFileStream(ftpPath);
+                if (inputStream != null) {
+
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            content.append(line).append("\n");
+                        }
+                    }
+                    ftpClient.completePendingCommand();
+                } else {
+                    System.out.println("Impossible d'ouvrir le fichier !");
+                }
+
+                ftpClient.logout();
+                ftpClient.disconnect();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return content.toString().trim();
         }
     }
 

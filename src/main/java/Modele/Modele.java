@@ -14,15 +14,9 @@ public class Modele {
     private final DBManager dbManager = new DBManager();
 
     public List<Order> getOrders() {
-        try {
-            fileManager.writeFTP();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         List<Order> orders = new ArrayList<>();
         String filePath = "orders.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -52,7 +46,7 @@ public class Modele {
     public List<Custommer> getCustommers() {
         List<Custommer> custommers = new ArrayList<>();
         String filePath = "custommers.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, true);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -73,7 +67,7 @@ public class Modele {
     public List<MDTE> getMDTEs() throws Exception {
         List<MDTE> mdtes = new ArrayList<>();
         String filePath = "mdtes.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -94,7 +88,7 @@ public class Modele {
     public List<Options> getOptions() throws Exception {
         List<Options> options = new ArrayList<>();
         String filePath = "options.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -132,7 +126,7 @@ public class Modele {
     public List<Stock> getStocks() throws Exception {
         List<Stock> stocks = new ArrayList<>();
         String filePath = "stocks.txt";
-        String content = fileManager.read(filePath);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
