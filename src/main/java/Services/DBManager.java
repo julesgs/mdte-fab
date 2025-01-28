@@ -1,9 +1,6 @@
 package Services;
 
-import entite.Custommer;
-import entite.MDTE;
-import entite.Options;
-import entite.Stock;
+import entite.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -73,6 +70,31 @@ public class DBManager {
         }
     }
 
+    public List<Custommer> getAllCustommers() {
+        List<Custommer> custommers = new ArrayList<>();
+        String sql = "SELECT * FROM Custommer";
+
+        try (Connection conn = this.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Custommer custommer = new Custommer(
+                        rs.getString("_id"),
+                        rs.getString("_firstName"),
+                        rs.getString("_lastName"),
+                        rs.getString("_email"),
+                        rs.getString("_adress")
+                );
+                custommers.add(custommer);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return custommers;
+    }
+
     // ========================== GESTION DES MDTEs ==========================
 
     // Ajouter un MDTE
@@ -112,6 +134,29 @@ public class DBManager {
         } catch (Exception e) {
             throw new Exception("Erreur lors de l'envoi des MDTE à la base de données");
         }
+    }
+
+    public List<MDTE> getAllMDTEs() {
+        List<MDTE> mdtes = new ArrayList<>();
+        String sql = "SELECT * FROM MDTE";
+
+        try (Connection conn = this.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                MDTE mdte = new MDTE(
+                        rs.getString("_id"),
+                        rs.getString("_name"),
+                        rs.getFloat("_price")
+                );
+                mdtes.add(mdte);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mdtes;
     }
 
     // ========================== GESTION DES OPTIONS ==========================
@@ -158,6 +203,30 @@ public class DBManager {
         }
     }
 
+    public List<Options> getAllOptions() {
+        List<Options> options = new ArrayList<>();
+        String sql = "SELECT * FROM Options";
+
+        try (Connection conn = this.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Options option = new Options(
+                        rs.getString("_id"),
+                        rs.getString("_name"),
+                        rs.getString("_type"),
+                        rs.getInt("_mdteID")
+                );
+                options.add(option);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return options;
+    }
+
     // ========================== GESTION DES STOCKS ==========================
 
     // Ajouter un Stock
@@ -198,9 +267,33 @@ public class DBManager {
         }
     }
 
+    public List<Stock> getAllStocks() {
+        List<Stock> stocks = new ArrayList<>();
+        String sql = "SELECT * FROM Stock";
+
+        try (Connection conn = this.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Stock stock = new Stock(
+                        rs.getString("_id"),
+                        rs.getString("_idOption"),
+                        rs.getString("_idRack"),
+                        rs.getInt("_quantity")
+                );
+                stocks.add(stock);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stocks;
+    }
+
+
     // ========================== GESTION DES COMMANDES ==========================
 
-    // Ajouter une commande (Order)
     public void addOrder(String id, String clientId, String mdteId, float totalPrice, int state, String trackingNumber) {
         String sql = "INSERT INTO `Orders` (_id, _clientId, _mdteId, _totalPrice, _state, _trackingNumber) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -222,7 +315,7 @@ public class DBManager {
 
     // ========================== VIDAGE DES TABLES ==========================
 
-    // Vider toutes les tables
+    // Vide toutes les tables
     public void vidage() {
         String[] tables = {"Custommer", "Options", "Orders", "Stock", "MDTE"};
 
