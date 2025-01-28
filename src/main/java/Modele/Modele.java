@@ -1,7 +1,7 @@
 package Modele;
 
+import Services.DBManager;
 import Services.FileManager;
-import Services.VueManager;
 import entite.*;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 public class Modele {
 
     private final FileManager fileManager = new FileManager();
-    private final VueManager vueManager = new VueManager();
+    private final DBManager dbManager = new DBManager();
 
     public List<Order> getOrders() {
         List<Order> orders = new ArrayList<>();
@@ -55,6 +55,10 @@ public class Modele {
             custommers.add(custommer);
         }
 
+        for (Custommer c : custommers) {
+            dbManager.addCustommer(c.getID(), c.getFirstName(), c.getLastName(), c.getEmail(), c.getAdress());
+        }
+
         return custommers;
     }
 
@@ -65,7 +69,7 @@ public class Modele {
                 .orElse(null);
     }
 
-    public List<MDTE> getMDTEs() {
+    public List<MDTE> getMDTEs() throws Exception {
         List<MDTE> mdtes = new ArrayList<>();
         String filePath = "mdtes.txt";
         String content = fileManager.read(filePath);
@@ -77,17 +81,26 @@ public class Modele {
             mdtes.add(mdte);
         }
 
+        try {
+            for (MDTE m : mdtes) {
+                dbManager.addMDTE(m.getID(), m.getName(), m.getPrice());
+            }
+        }catch (Exception e){
+            throw new Exception("Erreur lors de l'envoi des MDTE à la base de données");
+        }
+
+
         return mdtes;
     }
 
-    public MDTE getMDTEByID(String id) {
+    public MDTE getMDTEByID(String id) throws Exception {
         return getMDTEs().stream()
                 .filter(mdte -> mdte.getID().equalsIgnoreCase(id))
                 .findFirst()
                 .orElse(null);
     }
 
-    public List<Options> getOptions() {
+    public List<Options> getOptions() throws Exception {
         List<Options> options = new ArrayList<>();
         String filePath = "options.txt";
         String content = fileManager.read(filePath);
@@ -101,10 +114,20 @@ public class Modele {
             options.add(option);
         }
 
+        try{
+            for (Options o : options) {
+                dbManager.addOption(o.getID(), o.getName(), o.getType(), o.getMdteID().toString());
+            }
+        } catch (Exception e) {
+            throw new Exception("Erreur lors de l'envoi des options à la base de données");
+        }
+
+
+
         return options;
     }
 
-    public Options getOptionByID(String id) {
+    public Options getOptionByID(String id) throws Exception {
         return getOptions().stream()
                 .filter(option -> option.getID().equalsIgnoreCase(id))
                 .findFirst()
@@ -126,7 +149,7 @@ public class Modele {
         return result;
     }
 
-    public List<Stock> getStocks() {
+    public List<Stock> getStocks() throws Exception {
         List<Stock> stocks = new ArrayList<>();
         String filePath = "stocks.txt";
         String content = fileManager.read(filePath);
@@ -143,7 +166,26 @@ public class Modele {
         return stocks;
     }
 
-    public Stock getStockByRefOption(String refOpt) {
+    public void getStocksForBDD() throws Exception {
+        List<Stock> stocks = new ArrayList<>();
+        String filePath = "stocks.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            Stock stock = new Stock(
+                    values[0], values[1], values[2], Integer.parseInt(values[3])
+            );
+            stocks.add(stock);
+        }
+
+        for (Stock s : stocks) {
+            dbManager.addStock(s.getID(), s.getIDOption(), s.getIDRack(), s.getQuantity());
+        }
+    }
+
+    public Stock getStockByRefOption(String refOpt) throws Exception {
         return getStocks().stream()
                 .filter(stock -> stock.getIDOption().equals(refOpt))
                 .findFirst()

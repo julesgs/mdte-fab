@@ -1,6 +1,6 @@
 package mdte.fab;
 
-import Services.DBConnector;
+import Services.DBManager;
 import entite.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -28,20 +28,15 @@ public class ApplicationController {
 
     private final Modele modele = new Modele();
     private final VueManager vueManager = new VueManager();
-    private final DBConnector dbConnector = new DBConnector();
+    private final DBManager dbManager = new DBManager();
 
 
     public void initialize() {
-        onRefreshButtonClick();
-        setNoEditableFields();
-        setListeners();
         try {
-            dbConnector.getConnection();
-            dbConnector.getFromBDD();
+            setupDataBase();
         } catch (Exception e) {
             vueManager.showError(error_label, e.getMessage());
         }
-
     }
 
     @FXML
@@ -59,7 +54,6 @@ public class ApplicationController {
 
         options_listView.getItems().clear();
         vueManager.deleteError(error_label);
-
         String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
 
         try {
@@ -76,7 +70,7 @@ public class ApplicationController {
     }
 
     @FXML
-    protected void onFabButtonClick() {
+    protected void onFabButtonClick() throws Exception {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
         String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
@@ -96,6 +90,20 @@ public class ApplicationController {
 
             modele.validateOrder(selectedOrder, qteStock1, qteStock2, qteStock3);
         }
+    }
+
+    private void setupDataBase() throws Exception {
+        dbManager.getConnection();
+        dbManager.vidage();
+        System.out.println("Setup database...");
+        onRefreshButtonClick();
+        setNoEditableFields();
+        setListeners();
+        modele.getOptions();
+        modele.getMDTEs();
+        modele.getCustommers();
+        modele.getStocksForBDD();
+        System.out.println("Base de données mise à jour");
     }
 
 
@@ -148,6 +156,7 @@ public class ApplicationController {
             List<Order> orders = modele.getOrders();
             orders_listView.getItems().clear();
             for (Order o : orders) {
+                dbManager.addOrder(o.getID(), o.getClientID().toString(), o.getMdteID().toString(), o.getTotalPrice(), o.getState(), o.getTrackingNumber());
                 if (o.getState() != 6){
                     orders_listView.getItems().add(o.getID());
                 }
@@ -172,7 +181,7 @@ public class ApplicationController {
         }
     }
 
-    private void showOptionPannel(Order o) {
+    private void showOptionPannel(Order o) throws Exception {
         List<String> lesOptions = o.getOptions();
         for (String opt : lesOptions) {
             Options option = modele.getOptionByID(opt);
@@ -250,7 +259,7 @@ public class ApplicationController {
         }
     }
 
-    private StringBuilder getStocksAfterFab(Order o) {
+    private StringBuilder getStocksAfterFab(Order o) throws Exception {
         List<String> options = o.getOptions();
         StringBuilder s = new StringBuilder();
         List<TextField> fields = Arrays.asList(option_1_field, option_2_field, option_3_field);
@@ -273,19 +282,31 @@ public class ApplicationController {
 
     private void setListeners() {
         option_1_field.textProperty().addListener((observable, oldValue, value) -> {
-            controlQte(value, 0);
+            try {
+                controlQte(value, 0);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
 
         option_2_field.textProperty().addListener((observable, oldValue, value) -> {
-            controlQte(value, 1);
+            try {
+                controlQte(value, 1);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
 
         option_2_field.textProperty().addListener((observable, oldValue, value) -> {
-            controlQte(value, 2);
+            try {
+                controlQte(value, 2);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
-    private void controlQte(String value, Integer numOption) {
+    private void controlQte(String value, Integer numOption) throws Exception {
 
         String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
         Order selectedOrder = modele.getOrderByID(selectedItem);
