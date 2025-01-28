@@ -99,10 +99,10 @@ public class ApplicationController {
         onRefreshButtonClick();
         setNoEditableFields();
         setListeners();
-        modele.getOptionsForBDD();
-        modele.getMDTEsForBDD();
-        modele.getCustommersForBDD();
-        modele.getStocksForBDD();
+        dbManager.getOptionsForBDD();
+        dbManager.getMDTEsForBDD();
+        dbManager.getCustommersForBDD();
+        dbManager.getStocksForBDD();
         System.out.println("Base de données mise à jour");
     }
 

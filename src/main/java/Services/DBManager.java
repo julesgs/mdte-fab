@@ -1,8 +1,17 @@
 package Services;
 
+import entite.Custommer;
+import entite.MDTE;
+import entite.Options;
+import entite.Stock;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBManager {
+
+    private final FileManager fileManager = new FileManager();
 
     public Connection getConnection() throws Exception {
         String url = "jdbc:mysql://localhost:8889/fab";
@@ -129,6 +138,86 @@ public class DBManager {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void getOptionsForBDD() throws Exception {
+        List<Options> options = new ArrayList<>();
+        String filePath = "options.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            Options option = new Options(
+                    values[0], values[1], values[2], Integer.parseInt(values[3])
+            );
+            options.add(option);
+        }
+
+        try{
+            for (Options o : options) {
+                this.addOption(o.getID(), o.getName(), o.getType(), o.getMdteID().toString());
+            }
+        } catch (Exception e) {
+            throw new Exception("Erreur lors de l'envoi des options à la base de données");
+        }
+    }
+
+    public void getStocksForBDD() throws Exception {
+        List<Stock> stocks = new ArrayList<>();
+        String filePath = "stocks.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            Stock stock = new Stock(
+                    values[0], values[1], values[2], Integer.parseInt(values[3])
+            );
+            stocks.add(stock);
+        }
+
+        for (Stock s : stocks) {
+            this.addStock(s.getID(), s.getIDOption(), s.getIDRack(), s.getQuantity());
+        }
+    }
+
+    public void getMDTEsForBDD() throws Exception {
+        List<MDTE> mdtes = new ArrayList<>();
+        String filePath = "mdtes.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            MDTE mdte = new MDTE(values[0], values[1], Float.parseFloat(values[2]));
+            mdtes.add(mdte);
+        }
+
+        try {
+            for (MDTE m : mdtes) {
+                this.addMDTE(m.getID(), m.getName(), m.getPrice());
+            }
+        }catch (Exception e){
+            throw new Exception("Erreur lors de l'envoi des MDTE à la base de données");
+        }
+    }
+
+    public void getCustommersForBDD() {
+        List<Custommer> custommers = new ArrayList<>();
+        String filePath = "custommers.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            Custommer custommer = new Custommer(values[0], values[1], values[2], values[3], values[4]);
+            custommers.add(custommer);
+        }
+
+        for (Custommer c : custommers) {
+            this.addCustommer(c.getID(), c.getFirstName(), c.getLastName(), c.getEmail(), c.getAdress());
         }
     }
 }
