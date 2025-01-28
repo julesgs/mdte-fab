@@ -51,6 +51,6 @@ public class Order {
     }
 
     public String toString() {
-        return _id + ";" + _clientId + ";" + _mdteId + ";" + _options + ";" + _totalPrice + ";" + 6 + ";" + _trackingNumber + "\n";
+        return _id + ";" + _clientId + ";" + _mdteId + ";" + _options + ";" + _totalPrice + ";" + 3 + ";" + _trackingNumber + "\n";
     }
 }
