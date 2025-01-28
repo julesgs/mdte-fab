@@ -157,7 +157,7 @@ public class ApplicationController {
             orders_listView.getItems().clear();
             for (Order o : orders) {
                 dbManager.addOrder(o.getID(), o.getClientID().toString(), o.getMdteID().toString(), o.getTotalPrice(), o.getState(), o.getTrackingNumber());
-                if (o.getState() != 6) {
+                if (o.getState() != 3) {
                     orders_listView.getItems().add(o.getID());
                 }
             }
