@@ -13,24 +13,83 @@ public class FileManager {
 
     // ========================== ÉCRITURE ==========================
 
-    public void write(String filePath, String content) {
-        File file = new File(filePath);
+    public void write(String filePath, String content, boolean isFTP) {
+        if (!isFTP) {
+            // Gestion de l'écriture en local
+            File file = new File(filePath);
 
-        String id = content.split(";")[0];
+            String id = content.split(";")[0];
 
-        for (String line : readLines(filePath)) {
-            if (line.startsWith(id)) {
-                System.out.println("Existe déjà : " + line);
-                return;
+            for (String line : readLines(filePath)) {
+                if (line.startsWith(id)) {
+                    System.out.println("Existe déjà : " + line);
+                    return;
+                }
             }
-        }
 
-        try (FileOutputStream fos = new FileOutputStream(file, true)) {
-            fos.write(content.getBytes());
-        } catch (FileNotFoundException e) {
-            System.out.println("Fichier introuvable : " + e.getMessage());
-        } catch (IOException e) {
-            throw new RuntimeException("Erreur d'écriture dans le fichier : " + e.getMessage(), e);
+            try (FileOutputStream fos = new FileOutputStream(file, true)) {
+                fos.write(content.getBytes());
+                fos.write(System.lineSeparator().getBytes()); // Ajouter un saut de ligne
+            } catch (FileNotFoundException e) {
+                System.out.println("Fichier introuvable : " + e.getMessage());
+            } catch (IOException e) {
+                throw new RuntimeException("Erreur d'écriture dans le fichier : " + e.getMessage(), e);
+            }
+        } else {
+            String server = "ftpperso.free.fr";
+            int port = 21;
+            String user = "pottarn";
+            String pass = "cydeaxch0";
+
+            FTPClient ftpClient = new FTPClient();
+
+            try {
+                ftpClient.connect(server, port);
+                ftpClient.login(user, pass);
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+                String ftpPath = "/CCI/" + filePath;
+
+                String id = content.split(";")[0];
+                InputStream inputStream = ftpClient.retrieveFileStream(ftpPath);
+
+                if (inputStream != null) {
+                    boolean exists = false;
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            if (line.startsWith(id)) {
+                                System.out.println("Existe déjà : " + line);
+                                exists = true;
+                                break;
+                            }
+                        }
+                    }
+                    ftpClient.completePendingCommand();
+
+                    if (exists) {
+                        ftpClient.logout();
+                        ftpClient.disconnect();
+                        return;
+                    }
+                }
+
+                InputStream inputStreamContent = new ByteArrayInputStream((content + System.lineSeparator()).getBytes());
+                boolean appended = ftpClient.appendFile(ftpPath, inputStreamContent);
+                inputStreamContent.close();
+
+                if (appended) {
+                    System.out.println("Écriture réussie sur le serveur FTP.");
+                } else {
+                    System.out.println("Échec de l'écriture sur le serveur FTP.");
+                }
+
+                ftpClient.logout();
+                ftpClient.disconnect();
+            } catch (IOException e) {
+                System.out.println("Erreur lors de l'écriture sur le serveur FTP : " + e.getMessage());
+            }
         }
     }
 
