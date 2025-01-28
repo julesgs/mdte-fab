@@ -55,11 +55,25 @@ public class Modele {
             custommers.add(custommer);
         }
 
+        return custommers;
+    }
+
+
+    public void getCustommersForBDD() {
+        List<Custommer> custommers = new ArrayList<>();
+        String filePath = "custommers.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            Custommer custommer = new Custommer(values[0], values[1], values[2], values[3], values[4]);
+            custommers.add(custommer);
+        }
+
         for (Custommer c : custommers) {
             dbManager.addCustommer(c.getID(), c.getFirstName(), c.getLastName(), c.getEmail(), c.getAdress());
         }
-
-        return custommers;
     }
 
     public Custommer getCustommerByID(String id) {
@@ -81,6 +95,21 @@ public class Modele {
             mdtes.add(mdte);
         }
 
+        return mdtes;
+    }
+
+    public void getMDTEsForBDD() throws Exception {
+        List<MDTE> mdtes = new ArrayList<>();
+        String filePath = "mdtes.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            MDTE mdte = new MDTE(values[0], values[1], Float.parseFloat(values[2]));
+            mdtes.add(mdte);
+        }
+
         try {
             for (MDTE m : mdtes) {
                 dbManager.addMDTE(m.getID(), m.getName(), m.getPrice());
@@ -88,9 +117,6 @@ public class Modele {
         }catch (Exception e){
             throw new Exception("Erreur lors de l'envoi des MDTE à la base de données");
         }
-
-
-        return mdtes;
     }
 
     public MDTE getMDTEByID(String id) throws Exception {
@@ -114,6 +140,23 @@ public class Modele {
             options.add(option);
         }
 
+        return options;
+    }
+
+    public void getOptionsForBDD() throws Exception {
+        List<Options> options = new ArrayList<>();
+        String filePath = "options.txt";
+        String content = fileManager.read(filePath);
+
+        for (String line : content.split("\n")) {
+            String[] values = line.split(";");
+
+            Options option = new Options(
+                    values[0], values[1], values[2], Integer.parseInt(values[3])
+            );
+            options.add(option);
+        }
+
         try{
             for (Options o : options) {
                 dbManager.addOption(o.getID(), o.getName(), o.getType(), o.getMdteID().toString());
@@ -121,10 +164,6 @@ public class Modele {
         } catch (Exception e) {
             throw new Exception("Erreur lors de l'envoi des options à la base de données");
         }
-
-
-
-        return options;
     }
 
     public Options getOptionByID(String id) throws Exception {
