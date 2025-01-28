@@ -56,6 +56,4 @@ public class VueManager {
     public void enableField(TextField tf) {
         tf.setDisable(false);
     }
-
-
 }

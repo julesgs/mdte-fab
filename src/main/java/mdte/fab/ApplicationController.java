@@ -126,12 +126,12 @@ public class ApplicationController {
         option_3_field.setVisible(show);
     }
 
-    private void blockFabrication(){
+    private void blockFabrication() {
         fab_button.setDisable(true);
         fab_button.setStyle("-fx-background-color: #c4c4c4");
     }
 
-    private void unlockFabrication(){
+    private void unlockFabrication() {
         fab_button.setDisable(false);
         fab_button.setStyle("-fx-font-style: normal;");
     }
@@ -157,7 +157,7 @@ public class ApplicationController {
             orders_listView.getItems().clear();
             for (Order o : orders) {
                 dbManager.addOrder(o.getID(), o.getClientID().toString(), o.getMdteID().toString(), o.getTotalPrice(), o.getState(), o.getTrackingNumber());
-                if (o.getState() != 6){
+                if (o.getState() != 6) {
                     orders_listView.getItems().add(o.getID());
                 }
             }
@@ -196,7 +196,6 @@ public class ApplicationController {
 
     private void showFabricationPannel(Order o) {
         try {
-
             selectOrder_label.setVisible(false);
             fabricationOrder_label.setVisible(true);
             fabricationOrder_label.setText("Fabrication de la commande " + o.getID());
@@ -238,7 +237,6 @@ public class ApplicationController {
             Custommer client = modele.getCustommerByID(clientID);
             String clientName = client.getFirstName() + " " + client.getLastName();
             vueManager.showValueInField(custommer_field, clientName);
-
         } catch (Exception e) {
             vueManager.setFieldError(custommer_field);
             String message = "Impossible de récupérer le nom du client";
@@ -251,7 +249,6 @@ public class ApplicationController {
             String mdteID = o.getMdteID().toString();
             String mdteName = modele.getMDTEByID(mdteID).getName();
             vueManager.showValueInField(mdte_field, mdteName);
-
         } catch (Exception e) {
             vueManager.setFieldError(mdte_field);
             String message = "Impossible de récupérer le nom du MDTE";
@@ -265,7 +262,6 @@ public class ApplicationController {
         List<TextField> fields = Arrays.asList(option_1_field, option_2_field, option_3_field);
         int i = 0;
         for (String opt : options) {
-
             Integer qteSaisie = 0;
             try {
                 qteSaisie = Integer.parseInt(fields.get(i).getText());
@@ -297,7 +293,7 @@ public class ApplicationController {
             }
         });
 
-        option_2_field.textProperty().addListener((observable, oldValue, value) -> {
+        option_3_field.textProperty().addListener((observable, oldValue, value) -> {
             try {
                 controlQte(value, 2);
             } catch (Exception e) {
@@ -307,7 +303,6 @@ public class ApplicationController {
     }
 
     private void controlQte(String value, Integer numOption) throws Exception {
-
         String selectedItem = orders_listView.getSelectionModel().getSelectedItem();
         Order selectedOrder = modele.getOrderByID(selectedItem);
         List<String> lesOptions = selectedOrder.getOptions();
@@ -330,10 +325,10 @@ public class ApplicationController {
                 unlockFabrication();
             }
         } catch (Exception e) {
-            if (fields.get(numOption).getText().isEmpty()) {
-            } else {
+            if (!fields.get(numOption).getText().isEmpty()) {
                 blockFabrication();
                 vueManager.showError(error_label, "Veuillez saisir une valeur numérique");
             }
         }
-    }}
+    }
+}
