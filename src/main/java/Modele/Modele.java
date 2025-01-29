@@ -46,7 +46,7 @@ public class Modele {
     public List<Custommer> getCustommers() {
         List<Custommer> custommers = new ArrayList<>();
         String filePath = "custommers.txt";
-        String content = fileManager.read(filePath, true);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
