@@ -46,7 +46,7 @@ public class Modele {
     public List<Custommer> getCustommers() {
         List<Custommer> custommers = new ArrayList<>();
         String filePath = "custommers.txt";
-        String content = fileManager.read(filePath, true);
+        String content = fileManager.read(filePath, false);
 
         for (String line : content.split("\n")) {
             String[] values = line.split(";");
@@ -161,11 +161,11 @@ public class Modele {
             for (Stock stock : stocks) {
                 Stock updatedStock = new Stock(stock.getID(), stock.getIDOption(), stock.getIDRack(), (stock.getQuantity() - qtes.get(i)));
                 i += 1;
-                fileManager.write("stocks.txt", updatedStock.toString(), false);
+                fileManager.write("stocks.txt", updatedStock.toString(), true);
             }
 
             Order updatedOrder = new Order(order.getID(), order.getClientID(), order.getMdteID(), order.getOptions(), order.getTotalPrice(), 6, order.getTrackingNumber());
-            fileManager.write("orders.txt", updatedOrder.toString(), false);
+            fileManager.write("orders.txt", updatedOrder.toString(), true);
 
         } catch (Exception e) {
             throw new IllegalArgumentException("Une erreur est survenue lors de la validation de la commande");

@@ -83,6 +83,7 @@ public class FileManager {
                     System.out.println("Écriture réussie sur le serveur FTP.");
                 } else {
                     System.out.println("Échec de l'écriture sur le serveur FTP.");
+                    System.out.println("Réponse FTP : " + ftpClient.getReplyString());
                 }
 
                 ftpClient.logout();
